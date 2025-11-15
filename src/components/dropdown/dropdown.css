@@ -10,6 +10,7 @@
     transition: background 0.2s, border-color 0.2s;
     box-shadow: 0 2px 8px rgba(35, 76, 106, 0.08);
     outline: none;
+    max-width: 100%;
 }
 
 .dropdown:focus {
@@ -35,4 +36,24 @@
     gap: 0.5rem;
     font-weight: 600;
     color: #D2C1B6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dropdown {
+        padding: 0.5em 1.2em;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dropdown {
+        padding: 0.5em 1em;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+    
+    .dropdown-container {
+        width: 100%;
+    }
 }

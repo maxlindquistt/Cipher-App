@@ -10,6 +10,7 @@
     background-color: #f0f0f0;
     padding: 0.25rem;
     border-radius: 8px;
+    flex-wrap: wrap;
 }
 
 .encode-decode-label {
@@ -22,6 +23,34 @@
     color: #1B3C53;
     transition: all 0.3s ease;
     user-select: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .encode-decode-container {
+        padding: 0.75rem;
+    }
+    
+    .encode-decode-label {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .encode-decode-container {
+        padding: 0.5rem;
+    }
+    
+    .encode-decode-options {
+        gap: 0.3rem;
+        padding: 0.2rem;
+    }
+    
+    .encode-decode-label {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
 }
 
 .encode-decode-label input[type="radio"] {

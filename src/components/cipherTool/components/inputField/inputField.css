@@ -26,3 +26,30 @@
     border-color: #0078d4;
     outline: none;
 }
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .input-field-container {
+        width: 100%;
+    }
+    
+    .input-field {
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .input-field {
+        min-height: 150px;
+        font-size: 1rem;
+        padding: 10px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .input-field {
+        min-height: 120px;
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
+}

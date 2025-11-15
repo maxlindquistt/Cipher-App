@@ -5,3 +5,20 @@ body {
     font-family: Arial, sans-serif;
     background-color: #00001d;
 }
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* Ensure proper responsive behavior */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 13px;
+    }
+}

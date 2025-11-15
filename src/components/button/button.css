@@ -16,3 +16,21 @@
 .button:hover {
     background-color: #234C6A;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .button {
+        margin: 0 50px;
+        padding: 0.5em 1.2em;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .button {
+        margin: 0 20px;
+        padding: 0.5em 1em;
+        font-size: 0.9rem;
+        width: auto;
+    }
+}
