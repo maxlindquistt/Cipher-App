@@ -1,0 +1,56 @@
+.encode-decode-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.encode-decode-options {
+    display: flex;
+    gap: 0.5rem;
+    background-color: #f0f0f0;
+    padding: 0.25rem;
+    border-radius: 8px;
+}
+
+.encode-decode-label {
+    position: relative;
+    cursor: pointer;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1B3C53;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.encode-decode-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
+.encode-decode-label input[type="radio"]:checked ~ span::before {
+    opacity: 1;
+}
+
+.encode-decode-label:has(input[type="radio"]:checked) {
+    background-color: #1B3C53;
+    color: white;
+    box-shadow: 0 2px 8px rgba(35, 76, 106, 0.2);
+}
+
+.encode-decode-label:hover {
+    background-color: rgba(27, 60, 83, 0.1);
+}
+
+.encode-decode-label:has(input[type="radio"]:checked):hover {
+    background-color: #234C6A;
+}
+
+.encode-decode-label span {
+    display: block;
+    transition: color 0.3s ease;
+}
