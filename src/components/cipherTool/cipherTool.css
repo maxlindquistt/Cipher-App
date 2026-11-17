@@ -1,61 +1,130 @@
 .cipher-tool {
-    background-color: #00002c;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    gap: var(--space-5);
+    min-width: 0;
+}
+
+/* Settings bar */
+
+.settings-bar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-panel);
+}
+
+/* Shared by every control group in the settings bar. */
+.setting {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.setting-label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: var(--leading-body);
+    color: var(--color-text-muted);
+}
+
+.setting-hint {
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    color: var(--color-text-muted);
+}
+
+/*
+ * The key slot always reserves room for label + control + a one-line hint,
+ * so switching ciphers doesn't shift the layout. Keep every hint to one line.
+ */
+.key-slot {
+    min-width: 0;
+    min-height: calc(2 * var(--text-sm) * var(--leading-body) + 2 * var(--space-2) + var(--control-h));
+}
+
+.key-slot-note {
+    display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 100px rgba(0, 0, 0);
-    align-items: center;
-    justify-content: center;
+    min-height: var(--control-h);
+    margin-top: calc(var(--text-sm) * var(--leading-body) + var(--space-2));
 }
 
-.options-section {
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    border-radius: 8px;
-    min-width: 400px;
-    min-height: 380px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-    .cipher-tool {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
+@media (min-width: 720px) {
+    .settings-bar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
     }
-    
-    .options-section {
-        min-width: 300px;
-        width: 100%;
-        max-width: 500px;
+
+    /* Size the slot by the control, not the hint, so the bar stays on one row. */
+    .key-slot {
+        flex: 1 1 14rem;
     }
 }
 
-@media (max-width: 768px) {
-    .cipher-tool {
-        padding: 10px;
-        gap: 10px;
-    }
-    
-    .options-section {
-        min-width: 250px;
-        min-height: 300px;
-    }
+/* Workspace: input, swap and output. Grid areas only position items; DOM order equals reading order. */
+
+.workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+        "in-label  in-label"
+        "in-text   in-text"
+        "in-foot   swap"
+        "out-label out-label"
+        "out-text  out-text"
+        "out-foot  out-foot";
+    column-gap: var(--space-2);
+    row-gap: var(--space-2);
 }
 
-@media (max-width: 480px) {
-    .cipher-tool {
-        padding: 8px;
-        border-radius: 4px;
+.workspace-in-label  { grid-area: in-label; }
+.workspace-in-text   { grid-area: in-text; }
+.workspace-in-foot   { grid-area: in-foot; }
+.workspace-swap      { grid-area: swap; }
+.workspace-out-label { grid-area: out-label; margin-top: var(--space-4); }
+.workspace-out-text  { grid-area: out-text; }
+.workspace-out-foot  { grid-area: out-foot; }
+
+.swap-button {
+    align-self: center;
+}
+
+/* Stacked layout: point the arrows up and down. */
+.swap-button svg {
+    transform: rotate(90deg);
+}
+
+@media (min-width: 720px) {
+    .workspace {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        grid-template-areas:
+            "in-label  .    out-label"
+            "in-text   swap out-text"
+            "in-foot   .    out-foot";
+        column-gap: var(--space-3);
     }
-    
-    .options-section {
-        min-width: auto;
-        width: 100%;
-        min-height: auto;
+
+    .workspace-out-label {
+        margin-top: 0;
+    }
+
+    .swap-button {
+        padding: 0;
+    }
+
+    /* Icon-only from tablet up; the accessible name comes from aria-label. */
+    .swap-button-text {
+        display: none;
+    }
+
+    .swap-button svg {
+        transform: none;
     }
 }

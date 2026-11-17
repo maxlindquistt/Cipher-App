@@ -228,3 +228,83 @@ Deno.test("Vigenere Cipher - Encrypt preserves emoji", () => {
   assertEquals(result, "RIJVS 🎉 UYVJN");
 });
 
+
+// Non-letter characters in the keyword are ignored
+Deno.test("Vigenere Cipher - Keyword with space behaves like letters only", () => {
+  const cipher = new Cipher();
+  assertEquals(
+    cipher.encryptVigenere("a b", "HELLO"),
+    cipher.encryptVigenere("ab", "HELLO")
+  );
+  assertEquals(cipher.encryptVigenere("a b", "HELLO"), "HFLMO");
+});
+
+Deno.test("Vigenere Cipher - Keyword with hyphen and space equals 'key'", () => {
+  const cipher = new Cipher();
+  assertEquals(cipher.encryptVigenere("k-e y", "HELLO WORLD"), "RIJVS UYVJN");
+  assertEquals(cipher.decryptVigenere("k-e y", "RIJVS UYVJN"), "HELLO WORLD");
+});
+
+Deno.test("Vigenere Cipher - Keyword with digits equals letters only", () => {
+  const cipher = new Cipher();
+  assertEquals(cipher.encryptVigenere("key1", "HELLO WORLD"), "RIJVS UYVJN");
+  assertEquals(cipher.encryptVigenere("1key", "HELLO WORLD"), "RIJVS UYVJN");
+  assertEquals(cipher.encryptVigenere("k1e2y3", "HELLO WORLD"), "RIJVS UYVJN");
+});
+
+Deno.test("Vigenere Cipher - Keyword with punctuation and leading/trailing junk", () => {
+  const cipher = new Cipher();
+  assertEquals(cipher.encryptVigenere("  !K.E,Y?  ", "HELLO"), "RIJVS");
+  assertEquals(cipher.decryptVigenere("  !K.E,Y?  ", "RIJVS"), "HELLO");
+});
+
+Deno.test("Vigenere Cipher - Non-letter keyword chars do not stop shifting", () => {
+  const cipher = new Cipher();
+  // Text longer than the key, so the key must wrap past the non-letter
+  assertEquals(
+    cipher.encryptVigenere("a b", "ATTACKATDAWN"),
+    cipher.encryptVigenere("ab", "ATTACKATDAWN")
+  );
+  assertEquals(cipher.encryptVigenere("ab", "AAAA"), "ABAB");
+});
+
+// Keywords with no letters leave the text unchanged
+Deno.test("Vigenere Cipher - Empty keyword returns text unchanged", () => {
+  const cipher = new Cipher();
+  assertEquals(cipher.encryptVigenere("", "Hello, World!"), "Hello, World!");
+  assertEquals(cipher.decryptVigenere("", "Hello, World!"), "Hello, World!");
+});
+
+Deno.test("Vigenere Cipher - Keyword with only non-letters returns text unchanged", () => {
+  const cipher = new Cipher();
+  for (const key of [" ", "123", "!@#", "1 2-3", "🎉"]) {
+    assertEquals(cipher.encryptVigenere(key, "Hello, World! 123"), "Hello, World! 123");
+    assertEquals(cipher.decryptVigenere(key, "Hello, World! 123"), "Hello, World! 123");
+  }
+});
+
+// Mixed-case keywords
+Deno.test("Vigenere Cipher - Mixed-case keyword equals lower/upper", () => {
+  const cipher = new Cipher();
+  const text = "Attack at Dawn!";
+  const expected = cipher.encryptVigenere("lemon", text);
+  assertEquals(cipher.encryptVigenere("LeMoN", text), expected);
+  assertEquals(cipher.encryptVigenere("LEMON", text), expected);
+  assertEquals(cipher.encryptVigenere("lEmOn 9", text), expected);
+});
+
+// Round trips with odd keywords
+Deno.test("Vigenere Cipher - Round-trip with non-letter keywords", () => {
+  const cipher = new Cipher();
+  const original = "The Quick Brown Fox, 42 Jumps! Over the Lazy Dog 🎉";
+  for (const key of ["a b", "key1", "k-e y", "Se Cr-3t", "", "123", "  Z  "]) {
+    const encrypted = cipher.encryptVigenere(key, original);
+    assertEquals(cipher.decryptVigenere(key, encrypted), original);
+  }
+});
+
+Deno.test("Vigenere Cipher - Key advances only on text letters with sanitized key", () => {
+  const cipher = new Cipher();
+  // Spaces/digits in text do not consume key letters: same as "KEY" on "HELLO WORLD"
+  assertEquals(cipher.encryptVigenere("K E Y", "HELLO 1 WORLD"), "RIJVS 1 UYVJN");
+});

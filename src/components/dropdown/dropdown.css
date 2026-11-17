@@ -1,59 +1,38 @@
 .dropdown {
-    color: white;
-    background-color: #1B3C53;
-    border: 1px solid #234C6A;
-    border-radius: 6px;
-    padding: 0.6em 1.4em;
-    font-size: 1rem;
-    font-weight: 600;
+    appearance: none;
+    width: 100%;
+    min-height: var(--control-h);
+    padding: 0 calc(var(--space-4) + 20px) 0 var(--space-3);
+    background-color: var(--color-surface-2);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none' stroke='%239fb3d9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-3) center;
+    background-size: 20px 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
     cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-    box-shadow: 0 2px 8px rgba(35, 76, 106, 0.08);
-    outline: none;
-    max-width: 100%;
+    transition: background-color var(--dur) ease-out;
 }
 
-.dropdown:focus {
-    border-color: #3A6A8A;
-    box-shadow: 0 0 0 3px rgba(35, 76, 106, 0.2);
+.dropdown:hover {
+    background-color: var(--color-surface-hover);
 }
 
 .dropdown option {
-    color: white;
-    background-color: #1B3C53;
+    background-color: var(--color-surface-2);
+    color: var(--color-text);
 }
 
-:focus {
-  outline: 0;
-  border-color: #2260ff;
-  box-shadow: 0 0 0 4px #b5c9fc;
-}
-
-.dropdown-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-    color: #D2C1B6;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .dropdown {
-        padding: 0.5em 1.2em;
-        font-size: 0.95rem;
+@media (min-width: 720px) {
+    .setting.dropdown-container {
+        min-width: 200px;
     }
 }
 
-@media (max-width: 480px) {
+/* Keep the native arrow in forced-colors mode, where background images are dropped. */
+@media (forced-colors: active) {
     .dropdown {
-        padding: 0.5em 1em;
-        font-size: 0.9rem;
-        width: 100%;
-    }
-    
-    .dropdown-container {
-        width: 100%;
+        appearance: auto;
     }
 }

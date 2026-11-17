@@ -1,85 +1,95 @@
-.encode-decode-container {
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
+.mode-toggle {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
 }
 
-.encode-decode-options {
-    display: flex;
-    gap: 0.5rem;
-    background-color: #f0f0f0;
-    padding: 0.25rem;
-    border-radius: 8px;
-    flex-wrap: wrap;
+/* Legends ignore flex gap, so the spacing is set on the legend itself. */
+.mode-toggle > legend {
+    padding: 0;
+    margin-bottom: var(--space-2);
 }
 
-.encode-decode-label {
+/*
+ * The track is exactly --control-h tall so it lines up with the select and the
+ * shift controls. It has no padding or gap: each option fills its half, so the
+ * tap area stays 44px tall. The visible pill is drawn inside the option with an
+ * inset ring, and the track border sits on a pseudo-element so it takes no space.
+ */
+.mode-toggle-track {
     position: relative;
-    cursor: pointer;
-    padding: 0.6rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 1rem;
-    color: #1B3C53;
-    transition: all 0.3s ease;
-    user-select: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+    background-color: var(--color-surface-2);
+    border-radius: var(--radius-pill);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .encode-decode-container {
-        padding: 0.75rem;
-    }
-    
-    .encode-decode-label {
-        padding: 0.5rem 1.2rem;
-        font-size: 0.95rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .encode-decode-container {
-        padding: 0.5rem;
-    }
-    
-    .encode-decode-options {
-        gap: 0.3rem;
-        padding: 0.2rem;
-    }
-    
-    .encode-decode-label {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-    }
-}
-
-.encode-decode-label input[type="radio"] {
+/* A real border on an out-of-flow layer: no layout cost, and it survives forced colours. */
+.mode-toggle-track::after {
+    content: "";
     position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
+    inset: 0;
+    z-index: 2;
+    border: 1px solid var(--color-border);
+    border-radius: inherit;
+    pointer-events: none;
 }
 
-
-.encode-decode-label input[type="radio"]:checked ~ span::before {
-    opacity: 1;
+.mode-toggle-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--control-h);
+    padding: 0 var(--space-5);
+    border-radius: var(--radius-pill);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background-color var(--dur) ease-out;
 }
 
-.encode-decode-label:has(input[type="radio"]:checked) {
-    background-color: #1B3C53;
-    color: white;
-    box-shadow: 0 2px 8px rgba(35, 76, 106, 0.2);
+/* The inset ring in the track colour makes the pill look inset while the hit area stays full size. */
+.mode-toggle-option:hover {
+    background-color: var(--color-surface-hover);
+    box-shadow: inset 0 0 0 var(--space-1) var(--color-surface-2);
 }
 
-.encode-decode-label:hover {
-    background-color: rgba(27, 60, 83, 0.1);
+.mode-toggle-option:has(input:checked) {
+    background-color: var(--color-accent);
+    box-shadow: inset 0 0 0 var(--space-1) var(--color-surface-2);
+    color: var(--color-on-accent);
+    font-weight: 600;
 }
 
-.encode-decode-label:has(input[type="radio"]:checked):hover {
-    background-color: #234C6A;
+/* Lift the focused option so its ring is not painted over by the other option. */
+.mode-toggle-option:has(input:focus-visible) {
+    z-index: 1;
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
 }
 
-.encode-decode-label span {
-    display: block;
-    transition: color 0.3s ease;
+@media (min-width: 720px) {
+    .mode-toggle-track {
+        display: inline-grid;
+    }
+}
+
+/* Selected state must not rely on colour alone when system colours are forced. */
+@media (forced-colors: active) {
+    .mode-toggle-track::after {
+        border-color: CanvasText;
+    }
+
+    /* Drawn as a border on a pseudo-element so the outline stays free for the focus ring. */
+    .mode-toggle-option:has(input:checked)::before {
+        content: "";
+        position: absolute;
+        inset: var(--space-1);
+        border: 2px solid Highlight;
+        border-radius: inherit;
+        pointer-events: none;
+    }
 }

@@ -213,5 +213,37 @@ Deno.test("Caesar Cipher - Round-trip with special characters", () => {
   assertEquals(decrypted, original);
 });
 
+// Negative shift regression tests
+Deno.test("Caesar Cipher - Decrypt with negative shift", () => {
+  const cipher = new Cipher();
+  assertEquals(cipher.decryptCaesar(-3, "ABC"), "DEF");
+  assertEquals(cipher.decryptCaesar(-1, "Abc"), "Bcd");
+});
 
+Deno.test("Caesar Cipher - Encrypt with negative shift preserves case", () => {
+  const cipher = new Cipher();
+  assertEquals(cipher.encryptCaesar(-3, "Hello, World! 1"), "Ebiil, Tloia! 1");
+});
 
+Deno.test("Caesar Cipher - Shift -26 is identity", () => {
+  const cipher = new Cipher();
+  assertEquals(cipher.encryptCaesar(-26, "Hello, World!"), "Hello, World!");
+  assertEquals(cipher.decryptCaesar(-26, "Hello, World!"), "Hello, World!");
+});
+
+Deno.test("Caesar Cipher - Shift 52 is identity", () => {
+  const cipher = new Cipher();
+  assertEquals(cipher.encryptCaesar(52, "Hello, World!"), "Hello, World!");
+  assertEquals(cipher.decryptCaesar(52, "Hello, World!"), "Hello, World!");
+});
+
+Deno.test("Caesar Cipher - Round-trip for shifts -60 to 60", () => {
+  const cipher = new Cipher();
+  const original = "The Quick Brown Fox, jumps over 13 lazy dogs! XYZ xyz";
+  for (let shift = -60; shift <= 60; shift++) {
+    const encrypted = cipher.encryptCaesar(shift, original);
+    assertEquals(cipher.decryptCaesar(shift, encrypted), original, `decrypt(${shift})`);
+    assertEquals(cipher.encryptCaesar(shift, cipher.decryptCaesar(shift, original)), original, `encrypt(${shift})`);
+    assertEquals(encrypted, cipher.encryptCaesar(shift + 26, original), `equiv(${shift})`);
+  }
+});

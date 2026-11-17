@@ -1,24 +1,120 @@
+/*
+ * Global stylesheet: design tokens, base element styles and shared utilities.
+ * Loaded from index.html before the app bundle so the page background and
+ * text colour are correct on first paint. Component styles live next to
+ * their components in src/components/.
+ */
+
+:root {
+    /* Blue palette */
+    --color-bg:            #00001d; /* page */
+    --color-surface:       #0b1440; /* panels, info card */
+    --color-surface-2:     #12205a; /* fields, secondary buttons */
+    --color-surface-hover: #1a2c75;
+    --color-border-subtle: #1e2c6b; /* decorative only */
+    --color-border:        #4a6cc4; /* control borders */
+    --color-text:          #e6f0ff;
+    --color-text-muted:    #9fb3d9;
+    --color-accent:        #5b9dff;
+    --color-accent-hover:  #7fb3ff;
+    --color-accent-active: #4a8cf5;
+    --color-on-accent:     #00001d;
+    --color-focus:         #9cc4ff;
+    --color-disabled-text: #7d8fbf;
+
+    /* Spacing (4px base) */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+
+    /* Radii */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-pill: 999px;
+
+    /* Type: base never below 16px */
+    --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+    --text-sm: 0.875rem;
+    --text-md: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.5rem;
+    --text-2xl: clamp(1.75rem, 1.2rem + 2.5vw, 2.75rem);
+    --leading-body: 1.6;
+
+    --control-h: 44px;
+    --shadow-panel: 0 8px 32px rgba(4, 12, 60, 0.6);
+    --dur: 150ms;
+
+    color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 body {
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    background-color: #00001d;
+    font: var(--text-md)/var(--leading-body) var(--font-ui);
+    color: var(--color-text);
+    background: var(--color-bg);
+    text-align: left;
 }
 
-*, *::before, *::after {
-    box-sizing: inherit;
+h1,
+h2,
+h3,
+p {
+    margin: 0;
 }
 
-/* Ensure proper responsive behavior */
-@media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
 }
 
-@media (max-width: 480px) {
-    body {
-        font-size: 13px;
+/* Visible keyboard focus for every interactive element (WCAG 2.4.7 / 2.4.11) */
+:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+/* Hide visually, keep available to assistive technology */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
     }
 }
