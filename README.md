@@ -32,9 +32,9 @@ This project was created as a learning exercise as a part of the course '1DV610'
 
 ### Prerequisites
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Deno (for running tests)
+- Node.js 20.19+ or 22.13+ (required by Vite 7 and ESLint 10)
+- npm (the repo includes `package-lock.json`, so use `npm ci` for a reproducible install)
+- [Deno](https://deno.com/) 2.x (for running the unit tests): `curl -fsSL https://deno.land/install.sh | sh`
 
 ### Installation
 
@@ -44,7 +44,7 @@ git clone https://github.com/MaxLindquistLnu/L3.git
 cd L3
 
 # Install dependencies
-npm install
+npm ci
 
 # Start development server
 npm run dev
@@ -56,10 +56,14 @@ The app will be available at `http://localhost:5173`
 
 ```bash
 # Run all unit tests with Deno
-deno test
+deno task test
 
 # Run specific test file
-deno test src/__tests__/cipherModuletests/caesar_test.ts
+deno test --no-lock src/__tests__/cipherModuletests/caesar_test.ts
+
+# Lint, typecheck and build
+npm run lint
+npm run build
 ```
 
 ## Project Structure
