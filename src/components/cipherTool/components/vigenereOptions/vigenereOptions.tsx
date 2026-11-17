@@ -23,7 +23,7 @@ function VigenereOptions({ keyword, onKeywordChange }: VigenereOptionsProps) {
         aria-describedby="key-hint"
       />
       <p id="key-hint" className="setting-hint">
-        Letters A–Z. Empty keyword leaves text unchanged.
+        Letters A–Z only.
       </p>
     </div>
   )

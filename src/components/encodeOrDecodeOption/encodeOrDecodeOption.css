@@ -11,14 +11,31 @@
     margin-bottom: var(--space-2);
 }
 
+/*
+ * The track is exactly --control-h tall so it lines up with the select and the
+ * shift controls. It has no padding or gap: each option fills its half, so the
+ * tap area stays 44px tall. The visible pill is drawn inside the option with an
+ * inset ring, and the track border sits on a pseudo-element so it takes no space.
+ */
 .mode-toggle-track {
+    position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-2);
-    padding: var(--space-1);
+    gap: 0;
+    padding: 0;
     background-color: var(--color-surface-2);
-    border: 1px solid var(--color-border);
     border-radius: var(--radius-pill);
+}
+
+/* A real border on an out-of-flow layer: no layout cost, and it survives forced colours. */
+.mode-toggle-track::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border: 1px solid var(--color-border);
+    border-radius: inherit;
+    pointer-events: none;
 }
 
 .mode-toggle-option {
@@ -34,17 +51,22 @@
     transition: background-color var(--dur) ease-out;
 }
 
+/* The inset ring in the track colour makes the pill look inset while the hit area stays full size. */
 .mode-toggle-option:hover {
     background-color: var(--color-surface-hover);
+    box-shadow: inset 0 0 0 var(--space-1) var(--color-surface-2);
 }
 
 .mode-toggle-option:has(input:checked) {
     background-color: var(--color-accent);
+    box-shadow: inset 0 0 0 var(--space-1) var(--color-surface-2);
     color: var(--color-on-accent);
     font-weight: 600;
 }
 
+/* Lift the focused option so its ring is not painted over by the other option. */
 .mode-toggle-option:has(input:focus-visible) {
+    z-index: 1;
     outline: 2px solid var(--color-focus);
     outline-offset: 2px;
 }
@@ -57,8 +79,17 @@
 
 /* Selected state must not rely on colour alone when system colours are forced. */
 @media (forced-colors: active) {
-    .mode-toggle-option:has(input:checked) {
-        outline: 2px solid Highlight;
-        outline-offset: -4px;
+    .mode-toggle-track::after {
+        border-color: CanvasText;
+    }
+
+    /* Drawn as a border on a pseudo-element so the outline stays free for the focus ring. */
+    .mode-toggle-option:has(input:checked)::before {
+        content: "";
+        position: absolute;
+        inset: var(--space-1);
+        border: 2px solid Highlight;
+        border-radius: inherit;
+        pointer-events: none;
     }
 }

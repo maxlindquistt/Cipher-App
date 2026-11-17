@@ -26,7 +26,7 @@ function OutputField({ label, value, copied, onCopy, ref }: OutputFieldProps) {
         spellCheck={false}
       />
       <div className="field-footer field-footer--end workspace-out-foot">
-        <Button variant="primary" onClick={onCopy} disabled={value === ''}>
+        <Button variant="primary" className="copy-button" onClick={onCopy} disabled={value === ''}>
           {copied ? 'Copied' : 'Copy'}
         </Button>
       </div>

@@ -5,3 +5,8 @@
 .field-footer--end {
     justify-content: flex-end;
 }
+
+/* Fits the longer "Copied" label, so the button keeps its width when the label changes. */
+.btn.copy-button {
+    min-width: 6.5rem;
+}

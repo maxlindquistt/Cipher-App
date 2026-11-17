@@ -10,6 +10,8 @@ interface CipherInfo {
   name: string
   description: ReactNode
   example: { input: string; output: string; note: string }
+  /** Cipher-specific items appended to the General notes list. */
+  extraNotes?: ReadonlyArray<string>
 }
 
 const CIPHER_INFO: Record<CipherId, CipherInfo> = {
@@ -40,6 +42,7 @@ const CIPHER_INFO: Record<CipherId, CipherInfo> = {
       </>
     ),
     example: { input: 'HELLO', output: 'RIJVS', note: 'keyword KEY' },
+    extraNotes: ['An empty keyword leaves the text unchanged.'],
   },
   atbash: {
     name: 'Atbash',
@@ -88,6 +91,7 @@ function InformationCard({ selectedCipher }: InformationCardProps) {
             This tool uses the <strong>English alphabet (A–Z)</strong>. Characters outside
             this range are treated as non-alphabetic characters.
           </li>
+          {info.extraNotes?.map((note) => <li key={note}>{note}</li>)}
         </ul>
       </details>
     </aside>

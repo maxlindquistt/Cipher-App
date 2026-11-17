@@ -40,12 +40,12 @@
 }
 
 /*
- * The key slot always reserves room for label + control + a two-line hint
- * (the Vigenère hint wraps), so switching ciphers doesn't shift the layout.
+ * The key slot always reserves room for label + control + a one-line hint,
+ * so switching ciphers doesn't shift the layout. Keep every hint to one line.
  */
 .key-slot {
     min-width: 0;
-    min-height: calc(3 * var(--text-sm) * var(--leading-body) + 2 * var(--space-2) + var(--control-h));
+    min-height: calc(2 * var(--text-sm) * var(--leading-body) + 2 * var(--space-2) + var(--control-h));
 }
 
 .key-slot-note {

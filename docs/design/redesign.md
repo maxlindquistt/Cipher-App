@@ -28,13 +28,13 @@ Source: ui-ux-designer review, 2026-11-17. Status: **proposal, awaiting owner ap
 
 Flow: choose cipher, set mode, set key, type, read the result, copy or swap. Settings go above the workspace, never between input and output.
 
-- **Desktop (≥1100px):** a 1200px-max container in a `1fr 340px` grid. The left column has a settings bar (one row), then input and output side by side with a swap button between them. The right column has the info card, `position: sticky; top: 24px`.
-- **Tablet (720–1099px):** same left column, with the info card moved below at full width.
+- **Desktop (≥1180px):** a 1200px-max container in a `1fr 340px` grid. The left column has a settings bar (one row), then input and output side by side with a swap button between them. The right column has the info card, `position: sticky; top: 24px`.
+- **Tablet (720–1179px):** same left column, with the info card moved below at full width.
 - **Mobile (<720px):** one column. Header, cipher, mode, key, input, action row, output, info card. Textareas are `min-height: 120px`.
 - The key slot always takes space. Atbash shows "No key needed", so the layout doesn't jump.
 
 ```
-DESKTOP >=1100
+DESKTOP >=1180
 +------------------------------------------------------------------------+
 | Cipher Tool                                                            |
 | Encode and decode text with Caesar, Vigenère and Atbash ciphers.       |
@@ -135,11 +135,11 @@ Use monospace for both text areas so the letters line up between input and outpu
 
 **Cipher selector:** native `<select id="cipher">` with `<label for="cipher">Cipher</label>`. 44px high, `--color-surface-2` background, 1px `--color-border`, `--radius-sm`, custom chevron (`appearance: none` plus an SVG background). Options are "Caesar", "Vigenère" and "Atbash". Full width on mobile, 200px minimum on desktop.
 
-**Encode/Decode toggle:** `<fieldset>` with `<legend>Mode</legend>` and two native radios, hidden with the visually-hidden clip pattern (not `width: 0`). The track is `--color-surface-2` with a 1px border, `--radius-pill` and 4px padding. Labels are `min-height: 44px` with `padding: 0 var(--space-5)`. The selected option gets `--color-accent` background, `--color-on-accent` text and weight 600. Focus: `label:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }`. Full width on mobile with two equal halves.
+**Encode/Decode toggle:** `<fieldset>` with `<legend>Mode</legend>` and two native radios, hidden with the visually-hidden clip pattern (not `width: 0`). The track is `--color-surface-2`, `--radius-pill`, exactly `--control-h` (44px) tall with no padding; its 1px border is drawn on an absolutely positioned `::after` so it takes no space and survives forced-colours mode. Labels are `min-height: 44px` with `padding: 0 var(--space-5)`. The selected option gets `--color-accent` background (inset 4px pill via `box-shadow: inset 0 0 0 var(--space-1) var(--color-surface-2)`), `--color-on-accent` text and weight 600. Focus: `label:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }`. Full width on mobile with two equal halves.
 
 **Caesar options:** label "Shift" on `input#shift`, with [−] [input] [+] at 44×44 each (the input is 64px wide). Use `inputmode="numeric"` and `aria-describedby="shift-hint"`. The value wraps: + goes 25 to 0, − goes 0 to 25. An empty field counts as 0 while typing and is set to 0 on blur. Never send NaN. Add a muted live hint `#shift-hint`, for example "A → D".
 
-**Vigenère options:** label "Keyword" on `input#key`, with `autocomplete="off" autocapitalize="none" spellcheck="false"` and `aria-describedby="key-hint"`. The hint reads "Letters A–Z. Empty keyword leaves text unchanged." The field is 44px high, at least 14rem wide, uses `--color-surface-2` and `--font-mono`.
+**Vigenère options:** label "Keyword" on `input#key`, with `autocomplete="off" autocapitalize="none" spellcheck="false"` and `aria-describedby="key-hint"`. The hint reads "Letters A–Z only." (the empty-keyword note lives in the info card's General notes). The field is 44px high, at least 14rem wide, uses `--color-surface-2` and `--font-mono`.
 
 **Atbash:** muted text "No key needed: A↔Z, B↔Y…" in the same slot.
 
