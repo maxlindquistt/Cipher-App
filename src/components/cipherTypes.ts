@@ -29,14 +29,6 @@ export function parseShift(text: string): number {
   return Number.isNaN(parsed) ? 0 : wrapShift(parsed)
 }
 
-/**
- * Keeps only the letters A–Z. VigenereCipher.normalizeKey stops advancing
- * through the key when it meets a non-letter, so the UI strips those first.
- */
-export function sanitizeKeyword(keyword: string): string {
-  return keyword.replace(/[^a-z]/gi, '')
-}
-
 export interface CipherSettings {
   cipher: CipherId
   mode: CipherMode
@@ -53,10 +45,8 @@ export function runCipher(text: string, { cipher: id, mode, shift, keyword }: Ci
   switch (id) {
     case 'caesar':
       return encode ? cipher.encryptCaesar(shift, text) : cipher.decryptCaesar(shift, text)
-    case 'vigenere': {
-      const key = sanitizeKeyword(keyword)
-      return encode ? cipher.encryptVigenere(key, text) : cipher.decryptVigenere(key, text)
-    }
+    case 'vigenere':
+      return encode ? cipher.encryptVigenere(keyword, text) : cipher.decryptVigenere(keyword, text)
     case 'atbash':
       return encode ? cipher.encryptAtbash(text) : cipher.decryptAtbash(text)
   }
