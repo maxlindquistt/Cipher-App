@@ -66,6 +66,15 @@ function CipherTool({ selectedCipher, onCipherChange }: CipherToolProps) {
   // Derived on every render, so an empty input always gives an empty output.
   const outputText = runCipher(inputText, settings)
 
+  // Reset the "Copied" label as soon as the result changes. Adjusting state
+  // during render (rather than in an effect) avoids an extra committed render:
+  // https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+  const [copiedResetFor, setCopiedResetFor] = useState(outputText)
+  if (copiedResetFor !== outputText) {
+    setCopiedResetFor(outputText)
+    setCopied(false)
+  }
+
   const announce = (text: string) => {
     // The id toggles a trailing no-break space so repeated messages are re-announced.
     setAnnouncement((prev) => ({ text, id: prev.id + 1 }))
@@ -82,11 +91,7 @@ function CipherTool({ selectedCipher, onCipherChange }: CipherToolProps) {
     return () => window.clearTimeout(timer)
   }, [outputText])
 
-  // Reset the "Copied" label when the result changes, and clean up on unmount.
-  useEffect(() => {
-    setCopied(false)
-    window.clearTimeout(copiedTimer.current)
-  }, [outputText])
+  // Clear the pending "Copied" reset timer on unmount.
   useEffect(() => () => window.clearTimeout(copiedTimer.current), [])
 
   const handleCipherChange = (value: string) => {
