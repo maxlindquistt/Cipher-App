@@ -9,6 +9,12 @@ export class CaesarCipher {
     this.alphabet = "abcdefghijklmnopqrstuvwxyz";
   }
 
+  // Proper modulo: always returns a value in [0, alphabet.length)
+  private wrap(n: number): number {
+    const len = this.alphabet.length;
+    return ((n % len) + len) % len;
+  }
+
   encrypt(str: string): string {
     return str
       .split("")
@@ -18,7 +24,7 @@ export class CaesarCipher {
         if (index === -1) return char;
 
         // Calculate the shifted index, wrapping around the alphabet
-        const shiftedIndex = (index + this.shift) % this.alphabet.length;
+        const shiftedIndex = this.wrap(index + this.shift);
         const shiftedChar = this.alphabet[shiftedIndex] ?? char;
         // Restore original case
         return isUpperCase ? shiftedChar.toUpperCase() : shiftedChar;
@@ -35,8 +41,7 @@ export class CaesarCipher {
         if (index === -1) return char;
 
         // Calculate the shifted index for decryption, wrapping around the alphabet
-        let newIndex = (index - this.shift) % this.alphabet.length;
-        if (newIndex < 0) newIndex += this.alphabet.length;
+        const newIndex = this.wrap(index - this.shift);
         const newChar = this.alphabet[newIndex] ?? char;
         // Restore original case
         return isUpperCase ? newChar.toUpperCase() : newChar;

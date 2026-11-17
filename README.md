@@ -25,7 +25,7 @@ This project was created as a learning exercise as a part of the course '1DV610'
 ## Tech Stack
 
 - **Frontend:** React + TypeScript + Vite
-- **Testing:** Deno (102 comprehensive unit tests)
+- **Testing:** Deno (118 comprehensive unit tests)
 - **Styling:** CSS with custom component styling
 
 ## Getting Started
