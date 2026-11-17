@@ -1,44 +1,38 @@
-import React from 'react';
-import './encodeOrDecodeOption.css';
+import type { CipherMode } from '../cipherTypes'
+import './encodeOrDecodeOption.css'
 
 interface EncodeOrDecodeOptionProps {
-    value?: 'encode' | 'decode';
-    onChange?: (value: 'encode' | 'decode') => void;
+  value: CipherMode
+  onChange: (value: CipherMode) => void
 }
 
+const MODES: ReadonlyArray<{ value: CipherMode; label: string }> = [
+  { value: 'encode', label: 'Encode' },
+  { value: 'decode', label: 'Decode' },
+]
+
+/** Encode/Decode segmented control built from a fieldset and native radios. */
 function EncodeOrDecodeOption({ value, onChange }: EncodeOrDecodeOptionProps) {
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (onChange) {
-            onChange(e.target.value as 'encode' | 'decode');
-        }
-    };
-
-    return (
-        <div className="encode-decode-container">
-            <div className="encode-decode-options">
-                <label className="encode-decode-label">
-                    <input 
-                        type="radio" 
-                        name="encode-decode" 
-                        value="encode"
-                        checked={value === 'encode'}
-                        onChange={handleChange}
-                    />
-                    <span>Encode</span>
-                </label>
-                <label className="encode-decode-label">
-                    <input 
-                        type="radio" 
-                        name="encode-decode" 
-                        value="decode"
-                        checked={value === 'decode'}
-                        onChange={handleChange}
-                    />
-                    <span>Decode</span>
-                </label>
-            </div>
-        </div>
-    );
+  return (
+    <fieldset className="setting mode-toggle">
+      <legend className="setting-label">Mode</legend>
+      <div className="mode-toggle-track">
+        {MODES.map((mode) => (
+          <label key={mode.value} className="mode-toggle-option">
+            <input
+              type="radio"
+              name="cipher-mode"
+              value={mode.value}
+              checked={value === mode.value}
+              onChange={() => onChange(mode.value)}
+              className="visually-hidden"
+            />
+            <span>{mode.label}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  )
 }
 
-export default EncodeOrDecodeOption;
+export default EncodeOrDecodeOption

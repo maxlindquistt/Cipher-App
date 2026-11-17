@@ -1,37 +1,48 @@
-div {
-    margin: 20px;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    height: auto;
-    align-items: center;
-    justify-content: center;
-    color: aliceblue;
+/* App shell: header and the responsive page grid. */
+
+.app {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-4) var(--space-7);
 }
 
-.information-card-container {
-    display: flex;
-    justify-content: center;
-    font-size: 1.1rem;
+.app-header {
+    padding: var(--space-5) 0;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    div {
-        margin: 10px;
+.app-title {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.app-subtitle {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+}
+
+/* Mobile and tablet: one column, info card below the tool. */
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    align-items: start;
+}
+
+@media (min-width: 720px) {
+    .app {
+        padding-inline: var(--space-5);
     }
-    
-    .information-card-container {
-        font-size: 1rem;
-        padding: 0 10px;
+
+    .app-header {
+        padding-block: var(--space-6);
     }
 }
 
-@media (max-width: 480px) {
-    div {
-        margin: 5px;
-    }
-    
-    .information-card-container {
-        font-size: 0.9rem;
+/* Desktop: tool on the left, sticky info card on the right. */
+@media (min-width: 1100px) {
+    .layout {
+        grid-template-columns: minmax(0, 1fr) 340px;
     }
 }
