@@ -65,16 +65,17 @@ export class VigenereCipher {
   }
 
   normalizeKey(key: string, length: number): string {
+    // Ignore any non-letter characters in the key
+    const letters = key
+      .toLowerCase()
+      .split("")
+      .filter((char) => char !== "" && this.isLetter(char))
+      .join("");
+    if (letters.length === 0) return "";
+
     let normalizedKey = "";
-    for (let i = 0, j = 0; i < length; i++) {
-      const currentChar = key[j] ?? "";
-      if (this.isLetter(currentChar)) {
-        normalizedKey += currentChar;
-        j++;
-      }
-      if (j === key.length) {
-        j = 0;
-      }
+    for (let i = 0; i < length; i++) {
+      normalizedKey += letters[i % letters.length];
     }
     return normalizedKey;
   }
